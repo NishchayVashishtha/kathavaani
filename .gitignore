@@ -1,0 +1,35 @@
+# Environments and packages
+.venv
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.run_*.sh
+.cache/
+
+# Binaries
+bin/ffmpeg
+bin/ffprobe
+
+# Large model weights and checkpoints (> 100 MB)
+checkpoints/*.pt
+models_cache/
+*.pt
+*.bin
+*.safetensors
+
+# Large raw datasets and generated audio
+data_storage/processed_16k/
+data_storage/segments/
+outputs/**/*.wav
+outputs/**/*.mp3
+outputs/*.wav
+
+# Cache directories
+.pytest_cache/
+.coverage
+htmlcov/

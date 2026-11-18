@@ -1,0 +1,26 @@
+# KathaVaani Core Dependencies
+pydantic>=2.7.0
+pyyaml>=6.0.1
+tqdm>=4.66.0
+requests>=2.31.0
+numpy>=1.24.0,<2.0.0
+scipy>=1.11.0
+soundfile>=0.12.1
+librosa>=0.10.1
+pydub>=0.25.1
+pyloudnorm>=0.1.1
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+websockets>=12.0
+python-multipart>=0.0.9
+faiss-cpu>=1.8.0
+speechbrain>=1.0.0
+transformers>=4.40.0
+accelerate>=0.30.0
+openai-whisper>=20231117
+yt-dlp>=2024.04.09
+gdown>=5.1.0
+langgraph>=0.0.40
+langchain-core>=0.1.40
+matplotlib>=3.8.0
+pandas>=2.2.0

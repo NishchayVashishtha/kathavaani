@@ -1,0 +1,22 @@
+{
+  "story_file": "01_panchatantra_sher_aur_khargosh.txt",
+  "title": "शेर और चतुर खरगोश",
+  "characters": [
+    {"id": "narrator", "name": "सूत्रधार", "gender": "male", "age_group": "adult"},
+    {"id": "C1", "name": "जानवर", "gender": "male", "age_group": "adult"},
+    {"id": "C2", "name": "शेर", "gender": "male", "age_group": "adult"},
+    {"id": "C3", "name": "खरगोश", "gender": "male", "age_group": "young"}
+  ],
+  "turns": [
+    {"idx": 0, "type": "narration", "speaker": "narrator", "emotion": "neutral"},
+    {"idx": 1, "type": "dialogue", "speaker": "C1", "emotion": "fear"},
+    {"idx": 2, "type": "dialogue", "speaker": "C2", "emotion": "angry"},
+    {"idx": 3, "type": "narration", "speaker": "narrator", "emotion": "neutral"},
+    {"idx": 4, "type": "dialogue", "speaker": "C2", "emotion": "angry"},
+    {"idx": 5, "type": "dialogue", "speaker": "C3", "emotion": "fear"},
+    {"idx": 6, "type": "dialogue", "speaker": "C2", "emotion": "angry"},
+    {"idx": 7, "type": "dialogue", "speaker": "C3", "emotion": "whisper"},
+    {"idx": 8, "type": "narration", "speaker": "narrator", "emotion": "tense"},
+    {"idx": 9, "type": "narration", "speaker": "narrator", "emotion": "happy"}
+  ]
+}

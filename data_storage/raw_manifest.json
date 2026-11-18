@@ -1,0 +1,184 @@
+[
+  {
+    "story_id": "story_000",
+    "original_filename": "Baagh Aaya Bhago! 😨 ｜ Pintu Bhaiya vs Leopard ｜ Hindi Cartoon Story.wav",
+    "processed_wav": "data_storage/processed_16k/story_000.wav",
+    "duration_seconds": 605.17,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_001",
+    "original_filename": "खतरे की वीडियो 😱📱 ｜ Comedy Village Story ｜ Hindi Animation.wav",
+    "processed_wav": "data_storage/processed_16k/story_001.wav",
+    "duration_seconds": 606.92,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_002",
+    "original_filename": "Gaon Main Gas Ka Ghotala ｜ गाँव में गैस का घोटाला  ｜ New Hindi Kahani ｜ Moral Story.wav",
+    "processed_wav": "data_storage/processed_16k/story_002.wav",
+    "duration_seconds": 693.24,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_003",
+    "original_filename": "Holi Ka Rang ｜ Pintu Aur Mukhiya Ki Funny Holi ｜ Hindi Comedy Cartoon Story.wav",
+    "processed_wav": "data_storage/processed_16k/story_003.wav",
+    "duration_seconds": 773.1,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_004",
+    "original_filename": "बाँके और पिंटू की मिठाई की दुकान  ｜ Comedy Hindi Story ｜ New Hindi Kahani ｜ Hindi Moral Animation.wav",
+    "processed_wav": "data_storage/processed_16k/story_004.wav",
+    "duration_seconds": 680.12,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_005",
+    "original_filename": "Horror Story 😨 - कर्णेश्वर राक्षस का खजाना ｜ Horror Story ｜ Kahani Junction ｜ #horrorstories.wav",
+    "processed_wav": "data_storage/processed_16k/story_005.wav",
+    "duration_seconds": 252.73,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_006",
+    "original_filename": "गर्मियों की दुल्हन ｜ Hindi Kahani ｜ Best Stories ｜ Stories in Hindi ｜ Khani Funny Stories.wav",
+    "processed_wav": "data_storage/processed_16k/story_006.wav",
+    "duration_seconds": 575.84,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_007",
+    "original_filename": "Horror Story 😨 - घुंघुरू की आवाज ｜ True Horror Stories ｜ Kahani Junction ｜ #horrorstories.wav",
+    "processed_wav": "data_storage/processed_16k/story_007.wav",
+    "duration_seconds": 308.5,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_008",
+    "original_filename": "एक चिपकली और पूरे गाँव की जीत ｜ Comedy Hindi Story ｜ New Hindi Kahani ｜ Hindi Moral Animation.wav",
+    "processed_wav": "data_storage/processed_16k/story_008.wav",
+    "duration_seconds": 628.09,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_009",
+    "original_filename": "Horror Story 😨 - भूतिया रेलवे स्टेशन ｜ Haunted Railway Station ｜ Kahani Junction ｜ #hauntedstation.wav",
+    "processed_wav": "data_storage/processed_16k/story_009.wav",
+    "duration_seconds": 267.47,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_010",
+    "original_filename": "गाँव में लस्सी कांड 😳｜  Funny Village Story ｜ Hindi Comedy Cartoon.wav",
+    "processed_wav": "data_storage/processed_16k/story_010.wav",
+    "duration_seconds": 708.21,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_011",
+    "original_filename": "Horror Story 😨 - भूतिया लड़का ｜ Story of a Ghost boy ｜ Kahani Junction ｜ #horrorstories.wav",
+    "processed_wav": "data_storage/processed_16k/story_011.wav",
+    "duration_seconds": 217.32,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_012",
+    "original_filename": "Jab Kachra Bana Khazana ｜ New Hindi Kahani ｜ Moral Story ｜ Hindi Comedy Story.wav",
+    "processed_wav": "data_storage/processed_16k/story_012.wav",
+    "duration_seconds": 711.76,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_013",
+    "original_filename": "गांव का चलता - फिरता बाज़ार ｜ New Hindi Kahani ｜ Moral Story ｜ Hindi Fairy Tales.wav",
+    "processed_wav": "data_storage/processed_16k/story_013.wav",
+    "duration_seconds": 658.12,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_014",
+    "original_filename": "Khiladiyon Ke Kisse - Sleep Stories ｜ How to sleep faster ｜ Bedtime Stories ｜ Kahani ｜ Hindi Stories.wav",
+    "processed_wav": "data_storage/processed_16k/story_014.wav",
+    "duration_seconds": 1587.39,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_015",
+    "original_filename": "Mahatma Gandhi ki Shiksha - Hindi me Kahani ｜ Motivational Sleep Story.wav",
+    "processed_wav": "data_storage/processed_16k/story_015.wav",
+    "duration_seconds": 1571.74,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_016",
+    "original_filename": "Nykaa Ki Nayikaa - Sone Ke Liye Kahani ｜ To Sleep ｜ To Relax ｜ How to calm your mind ｜ Hindi Story.wav",
+    "processed_wav": "data_storage/processed_16k/story_016.wav",
+    "duration_seconds": 1573.01,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_017",
+    "original_filename": "Ola ki Kahani -  Sone Ke Liye Kahani ｜ How to get good sleep ｜ To Sleep ｜ To Relax ｜ Hindi Kahani.wav",
+    "processed_wav": "data_storage/processed_16k/story_017.wav",
+    "duration_seconds": 1201.92,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_018",
+    "original_filename": "चाय की टपरी पर जंग ｜ Hindi Cartoon Story｜ Moral Story.wav",
+    "processed_wav": "data_storage/processed_16k/story_018.wav",
+    "duration_seconds": 636.2,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_019",
+    "original_filename": "The Miracle Morning- How to sleep faster ｜ Bedtime Story ｜ To Sleep ｜ To Relax ｜ Hindi Story ｜ Story.wav",
+    "processed_wav": "data_storage/processed_16k/story_019.wav",
+    "duration_seconds": 1596.17,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_020",
+    "original_filename": "Vivekanand ji ke Updesh ｜ Negative thoughts ko kaise roke？ ｜ Relax ｜ Hindi Story ｜ Storytelling.wav",
+    "processed_wav": "data_storage/processed_16k/story_020.wav",
+    "duration_seconds": 1770.81,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_021",
+    "original_filename": "दिलदारियापुर मे  डर का साया ｜ Hindi Kahani ｜ Hindi comedy Story ｜ Pintu Bhaiya.wav",
+    "processed_wav": "data_storage/processed_16k/story_021.wav",
+    "duration_seconds": 587.81,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_022",
+    "original_filename": "फ्लाइंग सिख - मिल्खा सिंह ｜ हिंदी कहानी ｜ Hindi Kahani ｜ Sleep Story ｜ Hindi Stories ｜ Milkha Singh.wav",
+    "processed_wav": "data_storage/processed_16k/story_022.wav",
+    "duration_seconds": 1797.9,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_023",
+    "original_filename": "बुद्धू राम की ट्रेन यात्रा ｜ Hindi Kahaniya ｜ Funny Stories ｜ Dadi Maa ki Kahaniya ｜ Ssoftoons Hindi.wav",
+    "processed_wav": "data_storage/processed_16k/story_023.wav",
+    "duration_seconds": 718.73,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_024",
+    "original_filename": "भूतिया लाइब्रेरी - True Horror Stories ｜ Bhoot Ki Kahani ｜ Darawani Kahaniya ｜ Kahani Junction.wav",
+    "processed_wav": "data_storage/processed_16k/story_024.wav",
+    "duration_seconds": 280.43,
+    "sample_rate": 16000
+  },
+  {
+    "story_id": "story_025",
+    "original_filename": "हाईजैक बस  😱 ｜ Hijack Bus Story ｜ Pintu Hero ｜ Pintu Ka Master Plan ｜  ｜ Hindi Animated Story.wav",
+    "processed_wav": "data_storage/processed_16k/story_025.wav",
+    "duration_seconds": 617.16,
+    "sample_rate": 16000
+  }
+]

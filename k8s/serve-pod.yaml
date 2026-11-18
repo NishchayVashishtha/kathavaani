@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kathavaani-studio-pod
+  namespace: dgx-s-bmu-soet-230737-restricted
+  labels:
+    app: kathavaani-studio
+spec:
+  restartPolicy: Always
+  volumes:
+  - name: workspace-vol
+    hostPath:
+      path: /home/dgx-s-bmu-soet-230737
+      type: Directory
+  containers:
+  - name: server
+    image: pytorch/pytorch:2.4.0-cuda12.4-cudnn9-runtime
+    workingDir: /workspace/kathavaani
+    env:
+    - name: HF_HOME
+      value: /tmp/hf_cache
+    - name: TORCH_HOME
+      value: /tmp/torch_cache
+    - name: PATH
+      value: /opt/conda/bin:/var/tmp/dgx-s-bmu-soet-230737/bin:/var/tmp/dgx-s-bmu-soet-230737/venv/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    command: ["/bin/bash", "-c"]
+    args:
+    - |
+      set -eo pipefail
+      python3 -m server.app --host 0.0.0.0 --port 8000
+    ports:
+    - containerPort: 8000
+      name: http
+    volumeMounts:
+    - name: workspace-vol
+      mountPath: /workspace
+    resources:
+      limits:
+        nvidia.com/mig-1g.18gb: 1
+        cpu: "8"
+        memory: "24Gi"
+      requests:
+        nvidia.com/mig-1g.18gb: 1
+        cpu: "4"
+        memory: "16Gi"

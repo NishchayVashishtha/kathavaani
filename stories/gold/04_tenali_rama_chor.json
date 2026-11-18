@@ -1,0 +1,20 @@
+{
+  "story_file": "04_tenali_rama_chor.txt",
+  "title": "तेनालीराम और चोर",
+  "characters": [
+    {"id": "narrator", "name": "सूत्रधार", "gender": "male", "age_group": "adult"},
+    {"id": "C1", "name": "तेनालीराम", "gender": "male", "age_group": "adult"}
+  ],
+  "turns": [
+    {"idx": 0, "type": "narration", "speaker": "narrator", "emotion": "neutral"},
+    {"idx": 1, "type": "narration", "speaker": "narrator", "emotion": "tense"},
+    {"idx": 2, "type": "narration", "speaker": "narrator", "emotion": "neutral"},
+    {"idx": 3, "type": "dialogue", "speaker": "C1", "emotion": "excited"},
+    {"idx": 4, "type": "narration", "speaker": "narrator", "emotion": "happy"},
+    {"idx": 5, "type": "narration", "speaker": "narrator", "emotion": "neutral"},
+    {"idx": 6, "type": "narration", "speaker": "narrator", "emotion": "neutral"},
+    {"idx": 7, "type": "narration", "speaker": "narrator", "emotion": "sad"},
+    {"idx": 8, "type": "dialogue", "speaker": "C1", "emotion": "sarcastic"},
+    {"idx": 9, "type": "narration", "speaker": "narrator", "emotion": "fear"}
+  ]
+}

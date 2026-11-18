@@ -1,0 +1,22 @@
+{
+  "story_file": "03_premchand_eidgah.txt",
+  "title": "ईदगाह",
+  "characters": [
+    {"id": "narrator", "name": "सूत्रधार", "gender": "male", "age_group": "adult"},
+    {"id": "C1", "name": "हामिद", "gender": "male", "age_group": "child"},
+    {"id": "C2", "name": "दादी अमीना", "gender": "female", "age_group": "elderly"}
+  ],
+  "turns": [
+    {"idx": 0, "type": "narration", "speaker": "narrator", "emotion": "happy"},
+    {"idx": 1, "type": "narration", "speaker": "narrator", "emotion": "excited"},
+    {"idx": 2, "type": "narration", "speaker": "narrator", "emotion": "tender"},
+    {"idx": 3, "type": "narration", "speaker": "narrator", "emotion": "sad"},
+    {"idx": 4, "type": "dialogue", "speaker": "C1", "emotion": "tender"},
+    {"idx": 5, "type": "narration", "speaker": "narrator", "emotion": "happy"},
+    {"idx": 6, "type": "narration", "speaker": "narrator", "emotion": "sad"},
+    {"idx": 7, "type": "narration", "speaker": "narrator", "emotion": "tender"},
+    {"idx": 8, "type": "dialogue", "speaker": "C2", "emotion": "angry"},
+    {"idx": 9, "type": "dialogue", "speaker": "C1", "emotion": "tender"},
+    {"idx": 10, "type": "narration", "speaker": "narrator", "emotion": "tender"}
+  ]
+}

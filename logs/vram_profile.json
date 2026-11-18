@@ -1,0 +1,37 @@
+{
+  "xtts_load": {
+    "timestamp": "2026-11-18 20:02:31",
+    "duration_seconds": 23.9,
+    "initial_vram_gb": 0.903,
+    "peak_vram_gb": 2.705,
+    "final_vram_gb": 2.705
+  },
+  "xtts_synthesis_batch": {
+    "timestamp": "2026-11-18 20:03:59",
+    "duration_seconds": 87.7,
+    "initial_vram_gb": 2.705,
+    "peak_vram_gb": 3.003,
+    "final_vram_gb": 2.789
+  },
+  "mms_load": {
+    "timestamp": "2026-11-18 20:04:07",
+    "duration_seconds": 7.8,
+    "initial_vram_gb": 1.04,
+    "peak_vram_gb": 1.141,
+    "final_vram_gb": 1.141
+  },
+  "mms_synthesis_batch": {
+    "timestamp": "2026-11-18 20:04:30",
+    "duration_seconds": 23.15,
+    "initial_vram_gb": 1.141,
+    "peak_vram_gb": 1.312,
+    "final_vram_gb": 1.141
+  },
+  "full_story_synthesis": {
+    "timestamp": "2026-11-18 21:02:37",
+    "duration_seconds": 90.79,
+    "initial_vram_gb": 0.0,
+    "peak_vram_gb": 2.386,
+    "final_vram_gb": 1.864
+  }
+}
