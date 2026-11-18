@@ -85,14 +85,19 @@ export const ListeningTest: React.FC<ListeningTestProps> = ({ onSubmitSuccess })
 
   return (
     <div className="max-w-3xl mx-auto p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-6">
-      <div className="border-b border-slate-800 pb-4">
-        <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-          <Headphones className="w-5 h-5 text-amber-400" />
-          अंधा तुलनात्मक परीक्षण (Blind A/B Listening Test & MOS Evaluation)
-        </h2>
-        <p className="text-xs text-slate-400 mt-1">
-          Standardized Subjective Evaluation Protocol for Deep Learning Speech Synthesis (MUSHRA / MOS Standard)
-        </p>
+      <div className="border-b border-slate-800 pb-4 flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
+            <Headphones className="w-5 h-5 text-amber-400" />
+            अंधा तुलनात्मक परीक्षण (Blind A/B Listening Test & MOS Evaluation)
+          </h2>
+          <p className="text-xs text-slate-400 mt-1">
+            Standardized Subjective Evaluation Protocol for Deep Learning Speech Synthesis (MUSHRA / MOS Standard)
+          </p>
+        </div>
+        <span className="px-2.5 py-1 rounded-full text-[11px] bg-slate-800 text-slate-300 border border-slate-700 font-mono">
+          Human Ratings: n = 0
+        </span>
       </div>
 
       {submitted ? (

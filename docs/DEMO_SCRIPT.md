@@ -61,15 +61,16 @@ Demonstrate an end-to-end autonomous speech synthesis system that transforms raw
 - **What to say:**
   > *"KathaVaani is backed by genuine empirical benchmarks executed directly on our cluster's NVIDIA H200 GPU.*
   > *In our 30-sentence TTS bake-off, XTTS v2 achieved an RTF of 0.21x (5x real-time) and an ECAPA-TDNN speaker similarity of 0.644, outperforming the Meta MMS-TTS baseline.*
-  > *In our 4-way ablation study: removing the Narrative Director dropped subjective MOS from 4.6 to 2.4 due to monotone flatness; using random voices collapsed speaker distinction to 3.1 MOS; and our full system achieved the highest fidelity and emotional engagement."*
+  > *In our 4-way ablation study: removing the Director increases CER from 40.25% to 45.61% and causes monotone flatness; omitting Timbre Lock drops speaker similarity from 0.243 to 0.158 with severe voice drift across turns; and Meta MMS-TTS has 0.000 speaker similarity as a single-speaker system.*
+  > *We also provide an interactive Blind A/B Listening Test interface in the studio for examiners to evaluate samples firsthand."*
 - **What to show on screen:**
   - Show the **Ablation Comparison Table** in the Viva Cheat Sheet tab:
-    | System Configuration | CER (%) | WER (%) | Spk Sim | RTF | MOS |
+    | System Configuration | CER (%) | WER (%) | Spk Sim | RTF | Human MOS ($n=0$) |
     | :--- | :---: | :---: | :---: | :---: | :---: |
-    | **Full KathaVaani (Ours)** | 40.25% | 51.48% | **0.243** | 0.36x | **4.6 / 5.0** |
-    | Ablation 1: W/O Director | 45.61% | 58.12% | 0.217 | 0.30x | 2.4 / 5.0 |
-    | Ablation 2: Random Voices | 54.23% | 66.89% | 0.158 | 0.33x | 3.1 / 5.0 |
-    | Ablation 3: Meta MMS-TTS | 26.21% | 34.50% | 0.000 | 0.04x | 1.8 / 5.0 |
+    | **Full KathaVaani (Ours)** | **40.25%** | **51.48%** | **0.243** | 0.36x | *Pending trial* |
+    | Ablation 1: W/O Director | 45.61% | 58.12% | 0.217 | 0.30x | *Pending trial* |
+    | Ablation 2: Random Voices | 54.23% | 66.89% | 0.158 | 0.33x | *Pending trial* |
+    | Ablation 3: Meta MMS-TTS | 26.21% | 34.50% | 0.000 | 0.04x | *Pending trial* |
 
 ---
 

@@ -170,10 +170,10 @@
 4. **Ablation 3 (Meta MMS-TTS Baseline):** Single-speaker non-cloning VITS model (`facebook/mms-tts-hin`).
 
 ### 22. What were the empirical findings of the ablation study?
-- **Ablation 1 (W/O Director):** Subjective MOS crashed from **4.6 / 5.0 down to 2.4 / 5.0**. The audio became monotonous and robotic; dramatic moments (such as a lion's roar or a rabbit's panic) sounded lifeless.
-- **Ablation 2 (Random Voices):** ECAPA-TDNN speaker similarity plummeted from **0.243 to 0.158**, and subjective MOS fell to **3.1 / 5.0**. Listeners experienced severe character confusion as the lion sounded like the rabbit across turns.
-- **Ablation 3 (Meta MMS-TTS):** Produced low CER (26.21%) due to clean single-speaker pronunciation, but Speaker Similarity was **0.000** and Subjective MOS was **1.8 / 5.0** because all characters sounded like the same robotic voice.
-- **Conclusion:** Full KathaVaani achieved the optimal balance of acoustic clarity, speaker distinction, and dramatic immersion.
+- **Ablation 1 (W/O Director):** Disabling prosodic directing increased CER from 40.25% to 45.61% and resulted in monotone delivery where dynamic emotional shifts (such as a lion's roar or a rabbit's panic) sounded flat.
+- **Ablation 2 (Random Voices / No Timbre Lock):** ECAPA-TDNN speaker similarity plummeted from **0.243 to 0.158**, causing character confusion as timbre drifted across turns.
+- **Ablation 3 (Meta MMS-TTS):** Produced low CER (26.21%) due to clean, predictable single-speaker pronunciation, but Speaker Similarity was **0.000** because all characters sounded like the same voice with zero cloning.
+- **Conclusion:** Full KathaVaani achieved the best balance of acoustic clarity, speaker distinction, and expressive modulation. Real human listening tests are actively being collected via the studio's Blind A/B interface.
 
 ---
 
@@ -181,8 +181,8 @@
 
 ### 23. Why did XTTS v2 have higher CER (~38–40%) than Meta MMS-TTS (~23–26%)?
 - **Expressive Prosody vs. Monotone Predictability:** Meta MMS-TTS synthesizes flat, slow, predictable neutral speech, which standard Whisper ASR models are heavily trained to transcribe.
-- **ASR Acoustic Mismatch:** KathaVaani intentionally synthesizes whispers, trembling fear, shouting anger, and dramatic pauses. Whisper's standard ASR decoder tends to hallucinate or misalign phonemes when encountering whisper/shout acoustic dynamics.
-- **Human Subjective Evaluation:** When human evaluators listened to both outputs, KathaVaani scored **4.6 / 5.0 MOS** while MMS-TTS scored **1.8 / 5.0 MOS**. In storytelling, expressive prosody is paramount over monotone ASR alignment.
+- **ASR Acoustic Mismatch:** KathaVaani synthesizes whispers, trembling fear, shouting anger, and dramatic pauses. Whisper's standard ASR decoder tends to hallucinate or misalign phonemes when encountering whisper/shout acoustic dynamics.
+- **Storytelling Goal:** In storytelling, expressive prosody and distinct character identities are paramount over monotone ASR alignment. Automated predicted MOS (UTMOS) and human A/B tests evaluate expressiveness directly.
 
 ### 24. What are the ethical safeguards regarding voice cloning in KathaVaani?
 - KathaVaani operates exclusively with license-clean, open-source reference voices (Common Voice, IIT-Madras IndicTTS, OpenSLR) and synthetic voice profiles.

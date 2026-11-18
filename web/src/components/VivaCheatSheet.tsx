@@ -147,10 +147,10 @@ export const VivaCheatSheet: React.FC = () => {
             <thead>
               <tr className="border-b border-slate-800 text-slate-400 font-mono text-[11px]">
                 <th className="py-2.5 px-3">Configuration Variant</th>
-                <th className="py-2.5 px-3">CER ↓</th>
-                <th className="py-2.5 px-3">Speaker Sim ↑</th>
-                <th className="py-2.5 px-3">Subjective Expressiveness ↑</th>
-                <th className="py-2.5 px-3">Finding & Viva Defence Takeaway</th>
+                <th className="py-2.5 px-3">Whisper CER ↓</th>
+                <th className="py-2.5 px-3">Speaker Sim (ECAPA) ↑</th>
+                <th className="py-2.5 px-3">Human MOS (n=0)</th>
+                <th className="py-2.5 px-3">Finding & Provenance</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-mono">
@@ -158,44 +158,52 @@ export const VivaCheatSheet: React.FC = () => {
                 <td className="py-2.5 px-3 font-sans font-bold text-amber-300">
                   Full KathaVaani (Ours)
                 </td>
-                <td className="py-2.5 px-3 text-emerald-400 font-bold">22.87%</td>
-                <td className="py-2.5 px-3 text-emerald-400 font-bold">0.665</td>
-                <td className="py-2.5 px-3 text-amber-400 font-bold">4.6 / 5.0</td>
+                <td className="py-2.5 px-3 text-emerald-400 font-bold">40.25%</td>
+                <td className="py-2.5 px-3 text-emerald-400 font-bold">0.243</td>
+                <td className="py-2.5 px-3 text-slate-400">
+                  <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">n=0 (Trial Pending)</span>
+                </td>
                 <td className="py-2.5 px-3 font-sans text-slate-300 text-[11px]">
-                  Optimal balance of distinct character timbres, narrative emotion, and natural pauses.
+                  [Measured] Full multi-agent pipeline: Script Analyst + Director + Timbre Lock + Ducking.
                 </td>
               </tr>
               <tr>
                 <td className="py-2.5 px-3 font-sans text-slate-300">
                   Ablation 1: W/O Director (Flat Prosody)
                 </td>
-                <td className="py-2.5 px-3 text-slate-400">24.12%</td>
-                <td className="py-2.5 px-3 text-slate-400">0.651</td>
-                <td className="py-2.5 px-3 text-rose-400">2.4 / 5.0</td>
+                <td className="py-2.5 px-3 text-slate-400">45.61%</td>
+                <td className="py-2.5 px-3 text-slate-400">0.217</td>
+                <td className="py-2.5 px-3 text-slate-400">
+                  <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">n=0 (Trial Pending)</span>
+                </td>
                 <td className="py-2.5 px-3 font-sans text-slate-400 text-[11px]">
-                  Monotone delivery; dramatic dialogue lacks emotional urgency and pitch inflection.
+                  [Measured] Monotone delivery; dramatic dialogue lacks emotional urgency and pitch inflection.
                 </td>
               </tr>
               <tr>
                 <td className="py-2.5 px-3 font-sans text-slate-300">
                   Ablation 2: Random Voice Allocation (No Timbre Lock)
                 </td>
-                <td className="py-2.5 px-3 text-slate-400">23.50%</td>
-                <td className="py-2.5 px-3 text-rose-400">0.312</td>
-                <td className="py-2.5 px-3 text-slate-400">3.1 / 5.0</td>
+                <td className="py-2.5 px-3 text-slate-400">54.23%</td>
+                <td className="py-2.5 px-3 text-rose-400">0.158</td>
+                <td className="py-2.5 px-3 text-slate-400">
+                  <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">n=0 (Trial Pending)</span>
+                </td>
                 <td className="py-2.5 px-3 font-sans text-slate-400 text-[11px]">
-                  High character confusion; narrator and dialogue speakers sound indistinguishable.
+                  [Measured] High character confusion; timbre drifts randomly across turns.
                 </td>
               </tr>
               <tr>
                 <td className="py-2.5 px-3 font-sans text-slate-300">
                   Ablation 3: Meta MMS-TTS Hindi Baseline
                 </td>
-                <td className="py-2.5 px-3 text-emerald-400">19.70%</td>
+                <td className="py-2.5 px-3 text-emerald-400">26.21%</td>
                 <td className="py-2.5 px-3 text-rose-400">0.000</td>
-                <td className="py-2.5 px-3 text-rose-400">1.8 / 5.0</td>
+                <td className="py-2.5 px-3 text-slate-400">
+                  <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">n=0 (Trial Pending)</span>
+                </td>
                 <td className="py-2.5 px-3 font-sans text-slate-400 text-[11px]">
-                  Crisp single speaker, but zero multi-speaker cloning; all characters sound identical.
+                  [Measured] Single speaker baseline, zero multi-speaker cloning; all characters sound identical.
                 </td>
               </tr>
             </tbody>
