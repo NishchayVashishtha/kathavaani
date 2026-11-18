@@ -1,0 +1,23 @@
+{
+  "Zero-shot XTTS v2": {
+    "num_evaluated": 30,
+    "mean_cer": 0.8392,
+    "mean_wer": 1.0861,
+    "mean_speaker_sim": 0.254,
+    "mean_predicted_mos": 3.552
+  },
+  "Best-Val Checkpoint (Epoch 4)": {
+    "num_evaluated": 30,
+    "mean_cer": 2.4002,
+    "mean_wer": 2.1988,
+    "mean_speaker_sim": 0.2756,
+    "mean_predicted_mos": 3.969
+  },
+  "Last Checkpoint (Epoch 7)": {
+    "num_evaluated": 30,
+    "mean_cer": 1.5552,
+    "mean_wer": 1.6328,
+    "mean_speaker_sim": 0.3013,
+    "mean_predicted_mos": 3.965
+  }
+}

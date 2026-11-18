@@ -122,7 +122,8 @@ class KathaVaaniOrchestrator:
 
                 # Compute speaker consistency / drift check
                 consistency = voice_bank.compute_similarity(assignment.voice_id, turn_wav_path)
-                logger.info(f"Turn {turn.idx} ({assignment.voice_name}) -> Consistency: {consistency:.3f}")
+                synth_meta = getattr(engine, "last_synthesis_meta", {})
+                logger.info(f"Turn {turn.idx} ({assignment.voice_name}) -> Consistency: {consistency:.3f} | ASR Attempts: {synth_meta.get('attempts', 1)}")
 
                 synthesized_turns.append({
                     "idx": turn.idx,
@@ -131,6 +132,8 @@ class KathaVaaniOrchestrator:
                     "text": turn.text,
                     "audio_path": turn_wav_path,
                     "consistency": consistency,
+                    "attempts": synth_meta.get("attempts", 1),
+                    "gate_cer": synth_meta.get("cer", 0.0),
                 })
 
         state["synthesized_turns"] = synthesized_turns

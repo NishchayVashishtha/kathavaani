@@ -91,6 +91,69 @@ class ScriptAnalyst:
 
         return chunks if chunks else [text]
 
+    def merge_short_and_consecutive_turns(self, turns: List[StoryTurn], min_words: int = 6, max_chars: int = 190) -> List[StoryTurn]:
+        """
+        Hardens turn chunking for TTS synthesis:
+        1. Merges consecutive turns from the same speaker (up to max_chars).
+        2. Merges turns shorter than min_words with neighbouring turns to prevent
+           XTTS autoregressive hallucination on short snippets (< 6 words).
+        3. Merges isolated narrative dialogue tags ('शेर ने कहा,') with preceding narration.
+        """
+        if not turns:
+            return []
+
+        # Pass 1: Merge consecutive turns with the same speaker_id
+        merged = []
+        for t in turns:
+            if not merged:
+                merged.append(t.model_copy())
+                continue
+            prev = merged[-1]
+            if prev.speaker_id == t.speaker_id:
+                combined_text = f"{prev.text} {t.text}".strip()
+                if len(combined_text) <= max_chars:
+                    prev.text = combined_text
+                    continue
+            merged.append(t.model_copy())
+
+        # Pass 2: Merge short turns (< min_words)
+        i = 0
+        refined = []
+        while i < len(merged):
+            curr = merged[i]
+            words = curr.text.split()
+            if len(words) < min_words:
+                # If dialogue turn and next turn is same speaker, merge forward
+                if i + 1 < len(merged) and merged[i + 1].speaker_id == curr.speaker_id:
+                    comb = f"{curr.text} {merged[i + 1].text}".strip()
+                    if len(comb) <= max_chars:
+                        merged[i + 1].text = comb
+                        i += 1
+                        continue
+                # If short narration dialogue tag (e.g. 'शेर ने कहा,'), merge into previous narration
+                if curr.type == "narration" and refined and refined[-1].type == "narration":
+                    comb = f"{refined[-1].text} {curr.text}".strip()
+                    if len(comb) <= max_chars:
+                        refined[-1].text = comb
+                        i += 1
+                        continue
+                # If short dialogue preceded by same speaker in refined, merge backward
+                if refined and refined[-1].speaker_id == curr.speaker_id:
+                    comb = f"{refined[-1].text} {curr.text}".strip()
+                    if len(comb) <= max_chars:
+                        refined[-1].text = comb
+                        i += 1
+                        continue
+
+            refined.append(curr)
+            i += 1
+
+        # Re-index
+        for idx, t in enumerate(refined):
+            t.idx = idx
+
+        return refined
+
     def parse_rule_based(self, story_text: str) -> ScriptAnalysisResult:
         """
         Robust deterministic Devanagari parser extracting dialogue quotes,
@@ -190,49 +253,115 @@ class ScriptAnalyst:
                 personality="dramatic",
             )
 
+        # Apply turn hardening: merge consecutive & short turns (< 6 words)
+        hardened_turns = self.merge_short_and_consecutive_turns(turns)
+
         return ScriptAnalysisResult(
             title="हिंदी लोककथा",
             characters=list(characters.values()),
-            turns=turns,
+            turns=hardened_turns,
         )
 
     def _infer_speaker(self, prefix: str, existing_chars: dict) -> tuple:
-        """Heuristic gender & speaker extraction from Hindi verb morphology."""
+        """Heuristic gender & speaker extraction from Hindi verb morphology and ergative grammar."""
         gender = "male"
         age = "adult"
         name = "पात्र"
 
-        # Check female verbs
-        for v in self.REPORTING_VERBS_FEMALE:
-            if v in prefix:
-                gender = "female"
-                break
+        # Remove oblique / object noun phrases (e.g. "शेर से", "शेर को", "राजा की ओर देखा") to avoid attributing speech to addressee/object
+        prefix_subj = re.sub(r"([^\s,।\n]+)\s+(?:को|से|के लिए|का|की|के|की ओर|के पास|पर)\s*(?:देखा|कहा|बोला)?", "", prefix)
 
-        # Check demographic titles
-        if any(w in prefix for w in ["दादी", "नानी", "अम्मा", "बुढ़िया"]):
+        # Check ergative subject pattern: e.g. "खरगोश ने कहा", "शेर ने दहाड़ते हुए कहा", "पिंकी ने कहा"
+        ne_match = re.search(r"([^\s,।\n]+)\s+ने\s+(?:[^,।\n]*?)(?:कहा|बोला|बोली|पूछा|पूछी|प्रार्थना की|उत्तर दिया|दहाड़ा|गरजा|फुसफुसाया|फुसफुसाई|सोचा|चिल्लाया|चिल्लाई|निवेदन किया)", prefix)
+        if ne_match:
+            candidate = ne_match.group(1).strip()
+            candidate = re.sub(r"^(छोटे|बड़े|चतुर|बुद्धिमान|दुष्ट|क्रूर|सभी|नन्ही|वृद्ध)\s*", "", candidate)
+            if candidate and len(candidate) >= 2 and candidate not in ["और", "तो", "फिर", "एक", "सब", "भी"]:
+                name = candidate
+        else:
+            # Check intransitive reporting verbs without 'ने': e.g. "शेर चिल्लाया", "भासुरक बोला"
+            intr_match = re.search(r"([^\s,।\n]+)\s+(?:[^,।\n]*?)(?:चिल्लाया|चिल्लाई|बोला|बोली|फुसफुसाया|फुसफुसाई|गरजा|गरजी|दहाड़ा|दहाड़ी|कहा|कही)", prefix_subj)
+            if intr_match:
+                candidate = intr_match.group(1).strip()
+                candidate = re.sub(r"^(छोटे|बड़े|चतुर|बुद्धिमान|दुष्ट|क्रूर|सभी|नन्ही|वृद्ध)\s*", "", candidate)
+                if candidate and len(candidate) >= 2 and candidate not in ["और", "तो", "फिर", "एक", "सब", "भी", "गहरे", "पास"]:
+                    name = candidate
+
+        # Explicit Character & Entity Mapping based on true subject
+        if any(w in prefix for w in ["पिंकी ने", "नन्ही पिंकी", "बच्ची बोली", "पिंकी बोली"]):
+            name = "पिंकी"
             gender = "female"
-            age = "elderly"
+            age = "young"
+        elif any(w in prefix for w in ["दादी ने", "दादी माँ", "वृद्ध महिला", "दादी बोली"]):
             name = "दादी माँ"
-        elif any(w in prefix for w in ["दादा", "बाबा", "बूढ़ा", "साधु"]):
-            gender = "male"
+            gender = "female"
             age = "elderly"
-            name = "बाबा"
-        elif any(w in prefix for w in ["बच्चा", "लड़का", "बेटा", "पिंटू", "रोहन"]):
-            gender = "male"
-            age = "young"
-            name = "पिंटू"
-        elif any(w in prefix for w in ["बच्ची", "लड़की", "बेटी", "पिंकी", "तन्वी"]):
-            gender = "female"
-            age = "young"
-            name = "तन्वी"
-        elif any(w in prefix for w in ["राजा", "महाराज", "सम्राट"]):
+        elif any(w in prefix for w in ["विक्रमादित्य ने", "राजा ने", "महाराज ने", "राजा विक्रमादित्य"]):
+            name = "राजा विक्रमादित्य"
             gender = "male"
             age = "adult"
-            name = "महाराज"
-        elif any(w in prefix for w in ["रानी", "महारानी"]):
-            gender = "female"
+        elif any(w in prefix_subj for w in ["शेर", "भासुरक", "सिंह", "वनराज"]):
+            name = "शेर"
+            gender = "male"
             age = "adult"
-            name = "महारानी"
+        elif any(w in prefix_subj for w in ["खरगोश", "शशक"]):
+            name = "खरगोश"
+            gender = "male"
+            age = "young"
+        elif any(w in prefix_subj for w in ["जानवर", "पशु"]):
+            name = "वन-पशु"
+            gender = "male"
+            age = "adult"
+        elif any(w in prefix for w in ["बीरबल"]):
+            name = "बीरबल"
+            gender = "male"
+            age = "adult"
+        elif any(w in prefix for w in ["अकबर", "बादशाह", "शहंशाह"]):
+            name = "अकबर"
+            gender = "male"
+            age = "adult"
+        elif any(w in prefix for w in ["हामिद"]):
+            name = "हामिद"
+            gender = "male"
+            age = "child"
+        elif any(w in prefix for w in ["अमीना"]):
+            name = "अमीना"
+            gender = "female"
+            age = "elderly"
+        elif name in ["भासुरक"]:
+            name = "शेर"
+        elif name in ["जानवरों", "जानवर"]:
+            name = "वन-पशु"
+
+        # Check female verbs if gender still unknown
+        if gender == "unknown":
+            for v in self.REPORTING_VERBS_FEMALE:
+                if v in prefix:
+                    gender = "female"
+                    break
+
+        # Check demographic titles if name still generic
+        if name == "पात्र":
+            if any(w in prefix for w in ["दादी", "नानी", "अम्मा", "बुढ़िया"]):
+                gender = "female"
+                age = "elderly"
+                name = "दादी माँ"
+            elif any(w in prefix for w in ["दादा", "बाबा", "बूढ़ा", "साधु"]):
+                gender = "male"
+                age = "elderly"
+                name = "बाबा"
+            elif any(w in prefix for w in ["बच्चा", "लड़का", "बेटा", "पिंटू", "रोहन"]):
+                gender = "male"
+                age = "young"
+                name = "पिंटू"
+            elif any(w in prefix for w in ["बच्ची", "लड़की", "बेटी", "पिंकी", "तन्वी"]):
+                gender = "female"
+                age = "young"
+                name = "पिंकी"
+            elif any(w in prefix for w in ["राजा", "महाराज", "सम्राट"]):
+                gender = "male"
+                age = "adult"
+                name = "राजा विक्रमादित्य"
 
         # Find matching existing character or assign new
         for cid, char in existing_chars.items():

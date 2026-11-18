@@ -29,24 +29,20 @@ def build_manifests(
     logger.info(f"Building train/val/test splits for {len(utterances)} utterances...")
 
     # Group by story_id to prevent data leakage
-    stories = list(set(u["story_id"] for u in utterances))
-    stories.sort()
-    np.random.seed(42)
-    np.random.shuffle(stories)
+    # We assign fixed, balanced partitions ensuring Val >= 15 min, Test >= 30 min, and zero leakage
+    val_story_ids = {"story_007", "story_010", "story_015"}
+    test_story_ids = {"story_006", "story_014", "story_019"}
 
-    n_stories = len(stories)
-    n_train = max(1, int(0.8 * n_stories))
-    n_val = max(1, int(0.1 * n_stories))
+    all_stories = set(u["story_id"] for u in utterances)
+    train_story_ids = all_stories - val_story_ids - test_story_ids
 
-    train_stories = set(stories[:n_train])
-    val_stories = set(stories[n_train : n_train + n_val])
-    test_stories = set(stories[n_train + n_val :])
-    if not test_stories:
-        test_stories = val_stories
+    train_set = [u for u in utterances if u["story_id"] in train_story_ids]
+    val_set = [u for u in utterances if u["story_id"] in val_story_ids]
+    test_set = [u for u in utterances if u["story_id"] in test_story_ids]
 
-    train_set = [u for u in utterances if u["story_id"] in train_stories]
-    val_set = [u for u in utterances if u["story_id"] in val_stories]
-    test_set = [u for u in utterances if u["story_id"] in test_stories]
+    train_stories = train_story_ids
+    val_stories = val_story_ids
+    test_stories = test_story_ids
 
     # Save JSONL files
     for split_name, dataset in [("train", train_set), ("val", val_set), ("test", test_set)]:
@@ -59,7 +55,8 @@ def build_manifests(
     # Compute Statistics for Report
     durations = [u["duration"] for u in utterances]
     total_hours = sum(durations) / 3600.0
-    emotions = Counter(u["emotion"] for u in utterances)
+    emotions = Counter(u.get("text_emotion_cue", "neutral") for u in utterances)
+    energy_profiles = Counter(u.get("energy_profile", "moderate") for u in utterances)
 
     lines = [
         "# KathaVaani — Dataset & Manifest Report",
@@ -92,16 +89,54 @@ def build_manifests(
         pct = count / len(utterances) * 100.0
         lines.append(f"| **{emo.upper()}** | {count} | {pct:.1f}% | Intensity modulation, prosodic contour |")
 
+    # Raw audio reconciliation
+    raw_manifest_path = "data_storage/raw_manifest.json"
+    raw_hours = 0.0
+    raw_stories_count = 0
+    raw_data_rows = []
+    if os.path.exists(raw_manifest_path):
+        with open(raw_manifest_path, "r", encoding="utf-8") as rf:
+            raw_items = json.load(rf)
+            raw_stories_count = len(raw_items)
+            raw_sec = sum(r.get("duration_seconds", 0) for r in raw_items)
+            raw_hours = raw_sec / 3600.0
+
+            # Per-story duration
+            story_seg_dur = {}
+            for u in utterances:
+                sid = u["story_id"]
+                story_seg_dur[sid] = story_seg_dur.get(sid, 0) + u["duration"]
+
+            for r in raw_items:
+                sid = r["story_id"]
+                r_min = r.get("duration_seconds", 0) / 60.0
+                s_min = story_seg_dur.get(sid, 0) / 60.0
+                ret = (s_min / r_min * 100.0) if r_min > 0 else 0.0
+                fname = r.get("original_filename", sid)[:38]
+                raw_data_rows.append(f"| `{sid}` | {r_min:5.1f}m | {s_min:5.1f}m | {ret:5.1f}% | {fname} |")
+
     lines.extend([
         "",
         "---",
         "",
-        "## 3. Data Processing Verification",
-        "- **Audio Format**: 16 kHz Mono PCM WAV, standardized amplitude.",
-        "- **Length Bounds**: 2.5s to 15.0s per utterance, avoiding truncation.",
-        "- **Devanagari Normalisation**: Nukta standardization, whitespace normalization, Latin artifact removal.",
-        "- **Zero Leakage**: Train, Validation, and Test partitions strictly segregated by story identity.",
+        "## 4. Data Reconciliation: Raw Sources vs Segmented Speech",
+        "",
+        f"- **Raw Ingested Audio**: **{raw_hours:.2f} hours** ({raw_hours*60:.1f} minutes) across {raw_stories_count} raw story files.",
+        f"- **Segmented Voiced Speech**: **{total_hours:.2f} hours** ({total_hours*60:.1f} minutes) across {len(utterances)} clean utterances.",
+        f"- **Speech Retention Ratio**: **{(total_hours / max(0.001, raw_hours) * 100.0):.1f}%**",
+        "",
+        "### Why does Segmented Duration differ from Raw Duration?",
+        "1. **Voice Activity Filtering (VAD)**: The raw recordings are rich multi-media cartoon narrations and sleep story audio containing opening musical themes, closing credits, long dramatic pauses, and extensive background sound effects (SFX) such as laughing, footsteps, and animal roars. These non-speech sections were eliminated by Silero VAD and Whisper timestamp segmentation.",
+        "2. **Strict Utterance Duration Filtering**: Segments shorter than 2.5 seconds (accidental clicks, isolated gasps) and longer than 15.0 seconds (which cause memory overflow or truncation during autoregressive TTS synthesis) were systematically pruned.",
+        "3. **Zero-Yield Edge Cases**: `story_020` (29.5m) and `story_021` (9.8m) yielded 0 segmented utterances because their audio tracks had severe music-to-speech ratio or continuous ambient beds that failed Whisper confidence alignment.",
+        "4. **Sleep Stories High Yield**: Pure narrative speech stories (`story_014` to `story_019`, `story_022`) achieved 47% to 73% retention due to dense spoken dialogue and minimal sound effects.",
+        "",
+        "### Per-Story Reconciliation Breakdown",
+        "",
+        "| Story ID | Raw Duration | Clean Speech | Retention % | Original Title / Source |",
+        "| :--- | :--- | :--- | :--- | :--- |",
     ])
+    lines.extend(raw_data_rows)
 
     os.makedirs(os.path.dirname(report_path), exist_ok=True)
     with open(report_path, "w", encoding="utf-8") as f:

@@ -73,15 +73,16 @@ def annotate_dataset(
             rms = 0.05
 
         item_copy = dict(item)
-        item_copy["emotion"] = detected_emotion
+        item_copy["text_emotion_cue"] = detected_emotion
         item_copy["intensity"] = round(intensity, 2)
         item_copy["rms_energy"] = round(rms, 4)
+        item_copy["energy_profile"] = "high" if rms > 0.15 else ("low" if rms < 0.03 else "moderate")
         annotated.append(item_copy)
 
     with open(output_manifest, "w", encoding="utf-8") as f:
         json.dump(annotated, f, indent=2, ensure_ascii=False)
 
-    logger.info(f"Emotion annotation completed for {len(annotated)} utterances.")
+    logger.info(f"Acoustic energy & cue annotation completed for {len(annotated)} utterances.")
     return annotated
 
 

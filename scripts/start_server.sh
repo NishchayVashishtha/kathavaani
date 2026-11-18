@@ -20,7 +20,8 @@ echo "Starting FastAPI server inside worker pod..."
 kubectl exec "${POD_NAME}" -n "${NAMESPACE}" -- bash -c "
 pkill -f uvicorn || true
 cd /workspace/kathavaani && \
-nohup /tmp/venv_gpu/bin/uvicorn server.app:app --host 0.0.0.0 --port ${PORT} > logs/server.log 2>&1 &
+nohup /tmp/venv_gpu/bin/uvicorn server.app:app --host 0.0.0.0 --port ${PORT} </dev/null > logs/server.log 2>&1 &
+sleep 1
 "
 
 sleep 2

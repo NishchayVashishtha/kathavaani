@@ -18,3 +18,10 @@
 {"step": 18, "loss": 4.1123, "loss_text": 3.4329, "loss_mel": 0.1456, "peak_vram_gb": 8.84, "elapsed_sec": 520.5, "timestamp": "2026-11-18 20:53:59"}
 {"step": 19, "loss": 4.0859, "loss_text": 3.6626, "loss_mel": 0.0187, "peak_vram_gb": 8.84, "elapsed_sec": 547.8, "timestamp": "2026-11-18 20:54:27"}
 {"step": 20, "loss": 4.0799, "loss_text": 3.8384, "loss_mel": 0.0309, "peak_vram_gb": 8.84, "elapsed_sec": 575.0, "timestamp": "2026-11-18 20:54:54"}
+{"epoch": 1, "global_step": 392, "train_loss": 6.8221, "val_loss": 6.8052, "vram_gb": 8.3, "epoch_sec": 139.3, "timestamp": "2026-11-18 21:57:51"}
+{"epoch": 2, "global_step": 784, "train_loss": 6.3384, "val_loss": 6.6761, "vram_gb": 8.3, "epoch_sec": 137.3, "timestamp": "2026-11-18 22:00:15"}
+{"epoch": 3, "global_step": 1176, "train_loss": 6.0884, "val_loss": 6.6374, "vram_gb": 8.3, "epoch_sec": 137.9, "timestamp": "2026-11-18 22:02:45"}
+{"epoch": 4, "global_step": 1568, "train_loss": 5.8881, "val_loss": 6.5906, "vram_gb": 8.3, "epoch_sec": 136.8, "timestamp": "2026-11-18 22:05:11"}
+{"epoch": 5, "global_step": 1960, "train_loss": 5.7049, "val_loss": 6.6075, "vram_gb": 8.3, "epoch_sec": 135.4, "timestamp": "2026-11-18 22:07:35"}
+{"epoch": 6, "global_step": 2352, "train_loss": 5.5362, "val_loss": 6.6006, "vram_gb": 8.3, "epoch_sec": 134.4, "timestamp": "2026-11-18 22:09:57"}
+{"epoch": 7, "global_step": 2744, "train_loss": 5.3708, "val_loss": 6.6429, "vram_gb": 8.3, "epoch_sec": 133.6, "timestamp": "2026-11-18 22:12:19"}

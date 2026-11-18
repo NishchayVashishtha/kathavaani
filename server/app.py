@@ -334,16 +334,59 @@ def get_timeline():
 @app.get("/api/audio/{filename:path}")
 def serve_audio(filename: str):
     """Serves synthesized audio wav/mp3 files."""
+    clean_fn = filename.lstrip("/")
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     candidates = [
-        filename,
-        os.path.join(".", filename),
-        os.path.join("/workspace/kathavaani", filename),
-        os.path.join("/home/dgx-s-bmu-soet-230737/kathavaani", filename),
+        clean_fn,
+        os.path.join(base_dir, clean_fn),
+        os.path.join("/workspace/kathavaani", clean_fn),
+        os.path.join("/home/dgx-s-bmu-soet-230737/kathavaani", clean_fn),
+        os.path.join(base_dir, "outputs", clean_fn),
+        os.path.join("/workspace/kathavaani/outputs", clean_fn),
     ]
     for path in candidates:
-        if os.path.exists(path):
-            return FileResponse(path, media_type="audio/wav")
+        if os.path.exists(path) and os.path.isfile(path):
+            media_type = "audio/mpeg" if clean_fn.endswith(".mp3") else "audio/wav"
+            return FileResponse(path, media_type=media_type)
     raise HTTPException(status_code=404, detail=f"Audio file '{filename}' not found")
+
+
+@app.get("/api/gallery")
+def get_gallery():
+    """Returns pre-synthesized master showcase productions (Story 01 & Story 02)."""
+    productions = []
+    
+    # Story 01
+    s1_timeline = "outputs/studio/story_01/timeline.json"
+    if os.path.exists(s1_timeline):
+        with open(s1_timeline, "r", encoding="utf-8") as f:
+            t1 = json.load(f)
+        productions.append({
+            "id": "story_01",
+            "title": "पंचतंत्र: शेर और चतुर खरगोश",
+            "characters": ["कबीर (सूत्रधार)", "भासुरक (शेर)", "चतुर खरगोश"],
+            "duration_sec": round(t1.get("total_duration_ms", 157300) / 1000, 1),
+            "master_mp3": "/api/audio/outputs/studio/story_01/master.mp3",
+            "master_wav": "/api/audio/outputs/studio/story_01/master.wav",
+            "timeline": t1
+        })
+        
+    # Story 02
+    s2_timeline = "outputs/studio/story_02/timeline.json"
+    if os.path.exists(s2_timeline):
+        with open(s2_timeline, "r", encoding="utf-8") as f:
+            t2 = json.load(f)
+        productions.append({
+            "id": "story_02",
+            "title": "न्याय और ममता (विक्रमादित्य, दादी माँ, नन्ही पिंकी)",
+            "characters": ["कबीर (सूत्रधार)", "दादी माँ", "राजा विक्रमादित्य", "नन्ही पिंकी"],
+            "duration_sec": round(t2.get("total_duration_ms", 131438) / 1000, 1),
+            "master_mp3": "/api/audio/outputs/studio/story_02/master.mp3",
+            "master_wav": "/api/audio/outputs/studio/story_02/master.wav",
+            "timeline": t2
+        })
+        
+    return {"productions": productions}
 
 
 @app.post("/api/listening_test")

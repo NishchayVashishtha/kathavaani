@@ -28,10 +28,10 @@
     "final_vram_gb": 1.141
   },
   "full_story_synthesis": {
-    "timestamp": "2026-11-18 21:02:37",
-    "duration_seconds": 90.79,
+    "timestamp": "2026-11-18 23:29:48",
+    "duration_seconds": 210.57,
     "initial_vram_gb": 0.0,
-    "peak_vram_gb": 2.386,
-    "final_vram_gb": 1.864
+    "peak_vram_gb": 2.652,
+    "final_vram_gb": 2.136
   }
 }

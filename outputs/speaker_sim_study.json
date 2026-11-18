@@ -1,0 +1,336 @@
+{
+  "summary": {
+    "total_clips": 430,
+    "overall_mean_similarity": 0.7386,
+    "correlation_duration_similarity": 0.3726,
+    "bins": {
+      "under_2s": {
+        "count": 0,
+        "mean_sim": null,
+        "std_sim": null
+      },
+      "2s_to_4s": {
+        "count": 142,
+        "mean_sim": 0.6651,
+        "std_sim": 0.1728
+      },
+      "4s_to_8s": {
+        "count": 244,
+        "mean_sim": 0.7608,
+        "std_sim": 0.16
+      },
+      "over_8s": {
+        "count": 44,
+        "mean_sim": 0.8532,
+        "std_sim": 0.0664
+      },
+      "ge_2s": {
+        "count": 430,
+        "mean_sim": 0.7386,
+        "std_sim": 0.1681
+      }
+    }
+  },
+  "samples": [
+    {
+      "id": "utt_00328",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.6433
+    },
+    {
+      "id": "utt_00329",
+      "story_id": "story_006",
+      "duration": 4.0,
+      "similarity": 0.7303
+    },
+    {
+      "id": "utt_00330",
+      "story_id": "story_006",
+      "duration": 4.0,
+      "similarity": 0.7841
+    },
+    {
+      "id": "utt_00331",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.7376
+    },
+    {
+      "id": "utt_00332",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.7611
+    },
+    {
+      "id": "utt_00333",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.7113
+    },
+    {
+      "id": "utt_00334",
+      "story_id": "story_006",
+      "duration": 9.0,
+      "similarity": 0.7622
+    },
+    {
+      "id": "utt_00335",
+      "story_id": "story_006",
+      "duration": 6.0,
+      "similarity": 0.8738
+    },
+    {
+      "id": "utt_00336",
+      "story_id": "story_006",
+      "duration": 4.0,
+      "similarity": 0.5828
+    },
+    {
+      "id": "utt_00337",
+      "story_id": "story_006",
+      "duration": 6.0,
+      "similarity": 0.8928
+    },
+    {
+      "id": "utt_00338",
+      "story_id": "story_006",
+      "duration": 5.0,
+      "similarity": 0.8163
+    },
+    {
+      "id": "utt_00339",
+      "story_id": "story_006",
+      "duration": 5.0,
+      "similarity": 0.8109
+    },
+    {
+      "id": "utt_00340",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.606
+    },
+    {
+      "id": "utt_00341",
+      "story_id": "story_006",
+      "duration": 3.32,
+      "similarity": 0.7446
+    },
+    {
+      "id": "utt_00342",
+      "story_id": "story_006",
+      "duration": 3.5,
+      "similarity": 0.6793
+    },
+    {
+      "id": "utt_00343",
+      "story_id": "story_006",
+      "duration": 5.0,
+      "similarity": 0.8483
+    },
+    {
+      "id": "utt_00344",
+      "story_id": "story_006",
+      "duration": 9.0,
+      "similarity": 0.9075
+    },
+    {
+      "id": "utt_00345",
+      "story_id": "story_006",
+      "duration": 4.8,
+      "similarity": 0.7361
+    },
+    {
+      "id": "utt_00346",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.614
+    },
+    {
+      "id": "utt_00347",
+      "story_id": "story_006",
+      "duration": 4.0,
+      "similarity": 0.4423
+    },
+    {
+      "id": "utt_00348",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.3649
+    },
+    {
+      "id": "utt_00349",
+      "story_id": "story_006",
+      "duration": 5.0,
+      "similarity": 0.7477
+    },
+    {
+      "id": "utt_00350",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.4122
+    },
+    {
+      "id": "utt_00351",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.6629
+    },
+    {
+      "id": "utt_00352",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.7978
+    },
+    {
+      "id": "utt_00353",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.7178
+    },
+    {
+      "id": "utt_00354",
+      "story_id": "story_006",
+      "duration": 4.0,
+      "similarity": 0.7287
+    },
+    {
+      "id": "utt_00355",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.5321
+    },
+    {
+      "id": "utt_00356",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.7476
+    },
+    {
+      "id": "utt_00357",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.7774
+    },
+    {
+      "id": "utt_00358",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.7131
+    },
+    {
+      "id": "utt_00359",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.4479
+    },
+    {
+      "id": "utt_00360",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.5226
+    },
+    {
+      "id": "utt_00361",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.5341
+    },
+    {
+      "id": "utt_00362",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.7784
+    },
+    {
+      "id": "utt_00363",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.4085
+    },
+    {
+      "id": "utt_00364",
+      "story_id": "story_006",
+      "duration": 4.0,
+      "similarity": 0.8464
+    },
+    {
+      "id": "utt_00365",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.768
+    },
+    {
+      "id": "utt_00366",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.7253
+    },
+    {
+      "id": "utt_00367",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.2898
+    },
+    {
+      "id": "utt_00368",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.55
+    },
+    {
+      "id": "utt_00369",
+      "story_id": "story_006",
+      "duration": 4.0,
+      "similarity": 0.6335
+    },
+    {
+      "id": "utt_00370",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.6606
+    },
+    {
+      "id": "utt_00371",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.553
+    },
+    {
+      "id": "utt_00372",
+      "story_id": "story_006",
+      "duration": 6.8,
+      "similarity": 0.6451
+    },
+    {
+      "id": "utt_00373",
+      "story_id": "story_006",
+      "duration": 4.5,
+      "similarity": 0.588
+    },
+    {
+      "id": "utt_00374",
+      "story_id": "story_006",
+      "duration": 2.7,
+      "similarity": 0.3392
+    },
+    {
+      "id": "utt_00375",
+      "story_id": "story_006",
+      "duration": 4.0,
+      "similarity": 0.4468
+    },
+    {
+      "id": "utt_00376",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.3536
+    },
+    {
+      "id": "utt_00377",
+      "story_id": "story_006",
+      "duration": 3.0,
+      "similarity": 0.3566
+    }
+  ]
+}

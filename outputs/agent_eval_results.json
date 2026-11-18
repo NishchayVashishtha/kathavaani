@@ -1,0 +1,118 @@
+{
+  "num_stories_evaluated": 5,
+  "total_turns_evaluated": 50,
+  "character_detection": {
+    "precision": 0.6364,
+    "recall": 0.5833,
+    "micro_f1": 0.6087,
+    "macro_f1": 0.5133
+  },
+  "speaker_attribution": {
+    "narration_vs_dialogue_acc": 0.56,
+    "narrator_vs_character_role_acc": 0.56
+  },
+  "emotion_prediction": {
+    "exact_match_accuracy": 0.16,
+    "valence_match_accuracy": 0.46
+  },
+  "per_story": [
+    {
+      "title": "शेर और चतुर खरगोश",
+      "gold_characters": [
+        "शेर",
+        "खरगोश",
+        "जानवर"
+      ],
+      "pred_characters": [
+        "शेर",
+        "खरगोश",
+        "वन-पशु"
+      ],
+      "char_precision": 0.6667,
+      "char_recall": 0.6667,
+      "char_f1": 0.6667,
+      "turns_aligned": 10,
+      "speaker_type_acc": 0.5,
+      "speaker_role_acc": 0.5,
+      "emotion_exact_acc": 0.3,
+      "emotion_valence_acc": 0.6
+    },
+    {
+      "title": "बीरबल की खिचड़ी",
+      "gold_characters": [
+        "निर्धन ब्राह्मण",
+        "बीरबल",
+        "बादशाह अकबर"
+      ],
+      "pred_characters": [
+        "बीरबल",
+        "अकबर",
+        "ब्राह्मण"
+      ],
+      "char_precision": 1.0,
+      "char_recall": 1.0,
+      "char_f1": 1.0,
+      "turns_aligned": 12,
+      "speaker_type_acc": 0.5,
+      "speaker_role_acc": 0.5,
+      "emotion_exact_acc": 0.25,
+      "emotion_valence_acc": 0.5
+    },
+    {
+      "title": "ईदगाह",
+      "gold_characters": [
+        "हामिद",
+        "दादी अमीना"
+      ],
+      "pred_characters": [
+        "दादी माँ",
+        "हामिद"
+      ],
+      "char_precision": 0.5,
+      "char_recall": 0.5,
+      "char_f1": 0.5,
+      "turns_aligned": 10,
+      "speaker_type_acc": 0.6,
+      "speaker_role_acc": 0.6,
+      "emotion_exact_acc": 0.0,
+      "emotion_valence_acc": 0.3
+    },
+    {
+      "title": "तेनालीराम और चोर",
+      "gold_characters": [
+        "तेनालीराम"
+      ],
+      "pred_characters": [
+        "पात्र"
+      ],
+      "char_precision": 0.0,
+      "char_recall": 0.0,
+      "char_f1": 0.0,
+      "turns_aligned": 8,
+      "speaker_type_acc": 0.625,
+      "speaker_role_acc": 0.625,
+      "emotion_exact_acc": 0.25,
+      "emotion_valence_acc": 0.625
+    },
+    {
+      "title": "भूतिया हवेली का रहस्य",
+      "gold_characters": [
+        "काका",
+        "अतृप्त आत्मा",
+        "विक्रम"
+      ],
+      "pred_characters": [
+        "पात्र",
+        "विक्रम"
+      ],
+      "char_precision": 0.5,
+      "char_recall": 0.3333,
+      "char_f1": 0.4,
+      "turns_aligned": 10,
+      "speaker_type_acc": 0.6,
+      "speaker_role_acc": 0.6,
+      "emotion_exact_acc": 0.0,
+      "emotion_valence_acc": 0.3
+    }
+  ]
+}

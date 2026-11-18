@@ -110,15 +110,26 @@ def analyze_story_qc(story_dir="outputs/studio/story_01", output_json=None, outp
         except Exception:
             loudness_lufs = -70.0
 
-        # 5. Whisper ASR Round-trip
-        asr_res = asr_model.transcribe(wav_path, language="hi")
+        # 5. Whisper ASR Round-trip with Devanagari script constraint
+        asr_res = asr_model.transcribe(
+            wav_path,
+            language="hi",
+            initial_prompt="यह कहानी हिंदी में है और देवनागरी लिपि में लिखी गई है।",
+        )
         asr_text = asr_res.get("text", "").strip()
 
         cer = round(compute_cer(text, asr_text), 4)
         wer = round(compute_wer(text, asr_text), 4)
 
-        # 6. Speaker Similarity
-        assigned_voice = "narrator_male_deep" if speaker_id == "narrator" else "male_adult_hero"
+        # 6. Speaker Similarity against actual assigned reference voice
+        voice_map = {
+            "narrator": "narrator_male_deep",
+            "C1": "male_adult_hero",
+            "C2": "male_villain_dramatic",
+            "C3": "male_elderly_wise",
+            "C4": "child_boy_curious",
+        }
+        assigned_voice = voice_map.get(speaker_id, "narrator_male_deep" if speaker_id == "narrator" else "male_adult_hero")
         spk_sim = voice_bank.compute_similarity(assigned_voice, wav_path)
 
         turn_reports.append({
