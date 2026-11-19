@@ -247,25 +247,49 @@ def synthesize_full(payload: SynthesizeRequest):
         if not story_text:
             raise HTTPException(status_code=400, detail="Story text or turns required.")
 
-        res = orchestrator.run(
-            story_text,
-            output_dir="outputs/studio",
-            ambience_name=payload.ambience or "village_morning",
-            ducking_db=payload.ducking_db or -14.0,
-        )
-        SESSION["timeline_meta"] = res
+        import torch
+        if not torch.cuda.is_available():
+            logger.info("Server running on headnode without direct CUDA. Dispatching synthesis to H200 GPU worker pod...")
+            os.makedirs("outputs/studio", exist_ok=True)
+            tmp_story_path = "outputs/studio/live_input.txt"
+            with open(tmp_story_path, "w", encoding="utf-8") as f:
+                f.write(story_text)
+
+            import subprocess
+            cmd = [
+                "bash", "scripts/run_gpu.sh",
+                "python3", "-m", "kathavaani.orchestrator.graph",
+                "--story-file", "/workspace/kathavaani/outputs/studio/live_input.txt",
+                "--output-dir", "/workspace/kathavaani/outputs/studio",
+            ]
+            proc = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            if proc.returncode != 0:
+                logger.error(f"GPU Worker synthesis failed: {proc.stderr}")
+                raise RuntimeError(f"GPU synthesis error: {proc.stderr[-300:]}")
+        else:
+            res = orchestrator.run(
+                story_text,
+                output_dir="outputs/studio",
+                ambience_name=payload.ambience or "village_morning",
+                ducking_db=payload.ducking_db or -14.0,
+            )
+            SESSION["timeline_meta"] = res
 
         # Build timeline object for frontend
         timeline_path = "outputs/studio/timeline.json"
-        timeline_data = {"master_audio_url": "/api/audio/outputs/studio/master_story.wav", "stems": [], "total_duration": 0.0}
+        timeline_data = {
+            "master_audio_url": "/api/audio/outputs/studio/master.mp3",
+            "stems": [],
+            "total_duration": 0.0,
+        }
         if os.path.exists(timeline_path):
             with open(timeline_path, "r", encoding="utf-8") as f:
                 raw_tl = json.load(f)
-                timeline_data["master_audio_url"] = "/api/audio/" + raw_tl.get("master_audio", "outputs/studio/master_story.wav")
-                timeline_data["total_duration"] = raw_tl.get("total_duration_sec", 0.0)
-                timeline_data["lufs_level"] = raw_tl.get("loudness_lufs", -16.0)
-                timeline_data["ambience_track"] = raw_tl.get("ambience_track", "village_morning")
-                timeline_data["stems"] = raw_tl.get("stems", [])
+                master_file = raw_tl.get("master_mp3") or raw_tl.get("master_wav") or "outputs/studio/master.mp3"
+                clean_mf = master_file.replace("/workspace/kathavaani/", "").lstrip("/")
+                timeline_data["master_audio_url"] = f"/api/audio/{clean_mf}"
+                timeline_data["total_duration"] = round(raw_tl.get("total_duration_ms", 0) / 1000.0, 1)
+                timeline_data["turns"] = raw_tl.get("turns", [])
 
         return {
             "status": "success",

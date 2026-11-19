@@ -185,3 +185,28 @@ class KathaVaaniOrchestrator:
 
 
 orchestrator = KathaVaaniOrchestrator()
+
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="KathaVaani End-to-End Master Story Production")
+    parser.add_argument("--story-file", type=str, default=None, help="Path to story text file")
+    parser.add_argument("--story-text", type=str, default=None, help="Raw Hindi story text")
+    parser.add_argument("--output-dir", type=str, default="outputs/studio", help="Output directory")
+    args = parser.parse_args()
+
+    text = ""
+    if args.story_file and os.path.exists(args.story_file):
+        with open(args.story_file, "r", encoding="utf-8") as f:
+            text = f.read()
+    elif args.story_text:
+        text = args.story_text
+    else:
+        text = "एक गाँव में एक दयालु किसान रहता था। उसका नाम रामू था।"
+
+    res = orchestrator.run(
+        story_text=text,
+        output_dir=args.output_dir,
+    )
+    print("SUCCESS: Master production created at:", res.get("master_mp3") or res.get("master_wav"))
+
