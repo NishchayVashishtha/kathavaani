@@ -20,5 +20,12 @@ if [ "$STATUS" != "Running" ]; then
     kubectl wait --for=condition=Ready pod/"$POD_NAME" -n "$NAMESPACE" --timeout=60s
 fi
 
+# Ensure GPU environment is initialized inside the pod
+if ! kubectl exec "$POD_NAME" -n "$NAMESPACE" -- test -f /tmp/venv_gpu/bin/python 2>/dev/null; then
+    echo "Initializing GPU environment in $POD_NAME..."
+    kubectl exec "$POD_NAME" -n "$NAMESPACE" -- env HOME=/tmp /workspace/kathavaani/bin/uv venv --python /opt/conda/bin/python3 --system-site-packages /tmp/venv_gpu
+    kubectl exec "$POD_NAME" -n "$NAMESPACE" -- env HOME=/tmp UV_CACHE_DIR=/tmp/uv_cache /workspace/kathavaani/bin/uv pip install --python /tmp/venv_gpu/bin/python soundfile openai-whisper TTS "transformers>=4.38.0,<4.40.0" torchvision accelerate speechbrain faiss-cpu pyloudnorm
+fi
+
 # Execute command inside worker pod with exact argument preservation
 kubectl exec -i "$POD_NAME" -n "$NAMESPACE" -- env HOME=/tmp MPLCONFIGDIR=/tmp/matplotlib COQUI_TOS_AGREED=1 PATH=/tmp/venv_gpu/bin:/workspace/kathavaani/bin:$PATH PYTHONPATH=/workspace/kathavaani HF_HOME=/tmp/hf_cache TORCH_HOME=/tmp/torch_cache "$@"
