@@ -332,6 +332,7 @@ def get_timeline():
 
 
 @app.get("/api/audio/{filename:path}")
+@app.head("/api/audio/{filename:path}")
 def serve_audio(filename: str):
     """Serves synthesized audio wav/mp3 files."""
     clean_fn = filename.lstrip("/")
@@ -393,9 +394,6 @@ def get_gallery():
 @app.post("/api/listening-test")
 def submit_listening_test(submission: ListeningTestSubmission):
     """Records blind human evaluation MOS and preference rating to JSONL & CSV."""
-    log_file = "logs/listening_test_ratings.jsonl"
-    os.makedirs(os.path.dirname(log_file), exist_ok=True)
-
     record = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         "evaluator_id": submission.evaluator_id or submission.user_id or "Anonymous",
@@ -410,8 +408,11 @@ def submit_listening_test(submission: ListeningTestSubmission):
         "feedback": submission.feedback or submission.comments or "",
     }
 
-    with open(log_file, "a", encoding="utf-8") as f:
-        f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    log_files = ["logs/listening_test_ratings.jsonl", "data_storage/listening_test_results.jsonl"]
+    for lf in log_files:
+        os.makedirs(os.path.dirname(lf), exist_ok=True)
+        with open(lf, "a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
     return {"status": "recorded", "message": "Rating saved successfully. Thank you!"}
 

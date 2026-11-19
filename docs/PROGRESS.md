@@ -75,5 +75,17 @@ flowchart LR
 | **Audio Loudness Standard** | EBU R128 | **-18.77 LUFS integrated loudness + -14 dB sidechain ducking** | `outputs/studio/story_02/qc_report.md` |
 | **Digital Clipping Count** | 0 clipped turns | **0 / 12 turns clipped in Story 02; 0 / 14 in Story 01** | `outputs/studio/story_02/qc_report.md` |
 | **Distinct Character Cast** | $\ge 4$ characters | **4 characters in Story 02 (Narrator, Dadi, Maharaj, Pinki)** | `outputs/studio/story_02/timeline.json` |
-| **Human Listening Test Count** | $\ge 10$ raters | **$n = 0$ (Testing interface deployed at `/listening-test`)** | `web/src/components/ListeningTest.tsx` |
-| **Server Status** | Resilient background | **Uvicorn active on port 8888 (PID 238587)** | `curl /api/health` |
+| **Human Listening Test Count** | $\ge 10$ raters | **$n = 0$ (Dual-logging testing interface active at `/listening-test`)** | `web/src/components/ListeningTest.tsx` |
+| **Server Status** | Resilient background | **Uvicorn active on port 8888 (PID 272863)** | `curl /api/health` |
+
+---
+
+## Deliverables Status Summary
+
+- [x] `docs/PROGRESS.md`: Complete daily log, metrics, and failures documented.
+- [x] `docs/RESULTS.md`: Empirical bake-off, ASR benchmark, duration study, agent evaluation.
+- [x] `docs/LIMITATIONS.md`: Comprehensive failure modes, ethical safeguards, and dual-use policy.
+- [x] `docs/DEMO_SCRIPT.md`: 5-minute timed viva demonstration script grounded in Story 02.
+- [x] `docs/VIVA_CHEAT_SHEET.md`: 25 technical Q&As with empirical GPU evidence.
+- [x] KathaVaani Studio Web UI: Running persistently on port 8888 with preloaded showcases and live generation.
+
