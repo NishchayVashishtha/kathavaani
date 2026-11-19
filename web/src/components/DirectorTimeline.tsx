@@ -120,6 +120,12 @@ export const DirectorTimeline: React.FC<DirectorTimelineProps> = ({
             src={timeline.master_audio_url}
             onTimeUpdate={handleTimeUpdate}
             onEnded={() => setIsPlaying(false)}
+            onLoadedMetadata={(e) => {
+              const d = e.currentTarget.duration;
+              if (d && !isNaN(d) && isFinite(d)) {
+                setDuration(d);
+              }
+            }}
           />
         )}
 

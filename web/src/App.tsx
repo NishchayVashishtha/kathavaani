@@ -33,7 +33,7 @@ export const App: React.FC = () => {
   const [hasAnalyzed, setHasAnalyzed] = useState(false);
   const [statusMsg, setStatusMsg] = useState('System Ready • NVIDIA H200 (18GB VRAM)');
 
-  // Load Voice Bank on startup
+  // Load Voice Bank & Initial Master Showcase on startup
   useEffect(() => {
     fetch('/api/voicebank')
       .then((res) => res.json())
@@ -43,6 +43,23 @@ export const App: React.FC = () => {
         }
       })
       .catch((err) => console.error('Failed to load voice bank:', err));
+
+    fetch('/api/gallery')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.productions && data.productions.length > 0) {
+          const s1 = data.productions[0];
+          if (s1 && s1.timeline) {
+            setTimeline({
+              master_audio_url: s1.master_mp3,
+              stems: s1.timeline.stems || [],
+              total_duration: s1.duration_sec,
+              lufs_level: -16.0,
+            });
+          }
+        }
+      })
+      .catch((err) => console.error('Failed to load gallery showcase:', err));
   }, []);
 
   // Stage 1 & 2: Analyze & Direct
