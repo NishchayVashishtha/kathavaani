@@ -11,9 +11,14 @@ __pycache__/
 .run_*.sh
 .cache/
 
+# Logs and PIDs
+logs/*.log
+logs/*.pid
+
 # Binaries
 bin/ffmpeg
 bin/ffprobe
+bin/gh*
 
 # Large model weights and checkpoints (> 100 MB)
 checkpoints/*.pt

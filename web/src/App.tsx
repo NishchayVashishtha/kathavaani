@@ -56,10 +56,45 @@ export const App: React.FC = () => {
               total_duration: s1.duration_sec,
               lufs_level: -16.0,
             });
+            if (s1.timeline.turns) {
+              setTurns(
+                s1.timeline.turns.map((t: any) => ({
+                  idx: t.idx,
+                  type: t.speaker_id === 'narrator' ? 'narration' : 'dialogue',
+                  speaker: t.speaker_name,
+                  text: t.text,
+                  style: {
+                    emotion: t.emotion,
+                    intensity: t.intensity,
+                    pitch: t.pitch,
+                    speed: t.speed,
+                    volume: 'medium',
+                    pause_before_ms: 300,
+                    pause_after_ms: 200,
+                    reasoning: t.reasoning,
+                  },
+                }))
+              );
+              setHasAnalyzed(true);
+            }
           }
         }
       })
       .catch((err) => console.error('Failed to load gallery showcase:', err));
+
+    // Initial analysis for story 01 characters
+    fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        story_text: 'एक घने जंगल में भासुरक नाम का एक बहुत क्रूर और शक्तिशाली शेर रहता था। वह प्रतिदिन कई निर्दोष जानवरों को मारकर खा जाता था। एक दिन जंगल के सभी जानवरों ने मिलकर शेर से प्रार्थना की, महाराज! आप रोज़ इतने जानवरों को न मारें।'
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.characters) setCharacters(data.characters);
+      })
+      .catch((err) => console.error('Initial cast load error:', err));
   }, []);
 
   // Stage 1 & 2: Analyze & Direct
@@ -89,10 +124,64 @@ export const App: React.FC = () => {
     }
   };
 
+  // Preset selection handler
+  const handlePresetSelect = async (presetId: string, text: string) => {
+    if (!presetId) {
+      handleAnalyze(text);
+      return;
+    }
+
+    try {
+      // Analyze text to populate characters & cast board immediately
+      handleAnalyze(text);
+
+      const res = await fetch('/api/gallery');
+      const data = await res.json();
+      const prod = data.productions?.find((p: any) => p.id === presetId);
+
+      if (prod && prod.timeline) {
+        setTimeline({
+          master_audio_url: `${prod.master_mp3}?t=${Date.now()}`,
+          stems: prod.timeline.stems || [],
+          total_duration: prod.duration_sec,
+          lufs_level: -16.0,
+        });
+
+        if (prod.timeline.turns && prod.timeline.turns.length > 0) {
+          setTurns(
+            prod.timeline.turns.map((t: any) => ({
+              idx: t.idx,
+              type: t.speaker_id === 'narrator' ? 'narration' : 'dialogue',
+              speaker: t.speaker_name,
+              text: t.text,
+              style: {
+                emotion: t.emotion,
+                intensity: t.intensity,
+                pitch: t.pitch,
+                speed: t.speed,
+                volume: 'medium',
+                pause_before_ms: 300,
+                pause_after_ms: 200,
+                reasoning: t.reasoning,
+              },
+            }))
+          );
+        }
+        setHasAnalyzed(true);
+        setStatusMsg(`पूर्व-निर्मित कथा लोड हुई: ${prod.title} (${prod.duration_sec}s)`);
+      } else {
+        setStatusMsg(`कथा चयनित: ${presetId}। ऑडियो निर्माण के लिए बटन 2 दबाएं।`);
+      }
+    } catch (err) {
+      console.error('Preset load error:', err);
+      handleAnalyze(text);
+    }
+  };
+
   // Stage 4 & 5: Full Synthesis
   const handleSynthesize = async () => {
     setIsSynthesizing(true);
-    setStatusMsg('Executing XTTS v2 multi-speaker synthesis on NVIDIA H200 GPU...');
+    setStatusMsg('NVIDIA H200 GPU पर सभी पात्रों की आवाज एवं संगीत का निर्माण जारी है...');
     try {
       const res = await fetch('/api/synthesize', {
         method: 'POST',
@@ -107,12 +196,36 @@ export const App: React.FC = () => {
       const data = await res.json();
 
       if (data.timeline) {
-        setTimeline(data.timeline);
-        setStatusMsg('Production complete! Master audio normalized to -16 LUFS.');
+        setTimeline({
+          ...data.timeline,
+          master_audio_url: `${data.timeline.master_audio_url}?t=${Date.now()}`,
+        });
+
+        if (data.timeline.turns && data.timeline.turns.length > 0) {
+          setTurns(
+            data.timeline.turns.map((t: any) => ({
+              idx: t.idx,
+              type: t.speaker_id === 'narrator' ? 'narration' : 'dialogue',
+              speaker: t.speaker_name,
+              text: t.text,
+              style: {
+                emotion: t.emotion,
+                intensity: t.intensity,
+                pitch: t.pitch,
+                speed: t.speed,
+                volume: 'medium',
+                pause_before_ms: 300,
+                pause_after_ms: 200,
+                reasoning: t.reasoning,
+              },
+            }))
+          );
+        }
+        setStatusMsg(`पूर्ण ऑडियो निर्माण सफल! कुल अवधि: ${data.timeline.total_duration}s (-16 LUFS ब्रॉडकास्ट मानक)`);
       }
     } catch (err) {
       console.error('Synthesis error:', err);
-      setStatusMsg('Synthesis error. Check cluster GPU logs.');
+      setStatusMsg('ऑडियो निर्माण में त्रुटि। कृपया पुनः प्रयास करें।');
     } finally {
       setIsSynthesizing(false);
     }
@@ -229,6 +342,7 @@ export const App: React.FC = () => {
             <StoryInput
               onAnalyze={handleAnalyze}
               onSynthesize={handleSynthesize}
+              onPresetSelect={handlePresetSelect}
               isAnalyzing={isAnalyzing}
               isSynthesizing={isSynthesizing}
               hasAnalyzed={hasAnalyzed}

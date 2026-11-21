@@ -216,8 +216,9 @@ class AudioPostProcessor:
             raw_bgm = self.generate_ambience_bed(predominant_mood, total_duration_sec)
             ducked_bgm = self.apply_sidechain_ducking(raw_bgm, speech_master, ducking_db=-14.0)
             ducked_bgm = ducked_bgm * bgm_volume
-            final_master = final_master + ducked_bgm
-            bgm_track = ducked_bgm
+            min_len = min(len(final_master), len(ducked_bgm))
+            final_master = final_master[:min_len] + ducked_bgm[:min_len]
+            bgm_track = ducked_bgm[:min_len]
 
         # Normalize final master
         final_master = self.normalize_loudness(final_master)

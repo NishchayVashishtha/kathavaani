@@ -282,6 +282,7 @@ def synthesize_full(payload: SynthesizeRequest):
             "stems": [],
             "total_duration": 0.0,
             "lufs_level": -16.0,
+            "turns": [],
         }
         if os.path.exists(timeline_path):
             with open(timeline_path, "r", encoding="utf-8") as f:
@@ -293,6 +294,7 @@ def synthesize_full(payload: SynthesizeRequest):
                 timeline_data["lufs_level"] = raw_tl.get("loudness_lufs", -16.0)
                 timeline_data["ambience_track"] = raw_tl.get("ambience_track", "village_morning")
                 timeline_data["stems"] = raw_tl.get("stems", [])
+                timeline_data["turns"] = raw_tl.get("turns", [])
 
         return {
             "status": "success",
@@ -381,39 +383,39 @@ def serve_audio(filename: str):
 
 @app.get("/api/gallery")
 def get_gallery():
-    """Returns pre-synthesized master showcase productions (Story 01 & Story 02)."""
+    """Returns all pre-synthesized master showcase productions from outputs/studio."""
     productions = []
-    
-    # Story 01
-    s1_timeline = "outputs/studio/story_01/timeline.json"
-    if os.path.exists(s1_timeline):
-        with open(s1_timeline, "r", encoding="utf-8") as f:
-            t1 = json.load(f)
-        productions.append({
-            "id": "story_01",
-            "title": "पंचतंत्र: शेर और चतुर खरगोश",
-            "characters": ["कबीर (सूत्रधार)", "भासुरक (शेर)", "चतुर खरगोश"],
-            "duration_sec": round(t1.get("total_duration_ms", 157300) / 1000, 1),
-            "master_mp3": "/api/audio/outputs/studio/story_01/master.mp3",
-            "master_wav": "/api/audio/outputs/studio/story_01/master.wav",
-            "timeline": t1
-        })
-        
-    # Story 02
-    s2_timeline = "outputs/studio/story_02/timeline.json"
-    if os.path.exists(s2_timeline):
-        with open(s2_timeline, "r", encoding="utf-8") as f:
-            t2 = json.load(f)
-        productions.append({
-            "id": "story_02",
-            "title": "न्याय और ममता (विक्रमादित्य, दादी माँ, नन्ही पिंकी)",
-            "characters": ["कबीर (सूत्रधार)", "दादी माँ", "राजा विक्रमादित्य", "नन्ही पिंकी"],
-            "duration_sec": round(t2.get("total_duration_ms", 131438) / 1000, 1),
-            "master_mp3": "/api/audio/outputs/studio/story_02/master.mp3",
-            "master_wav": "/api/audio/outputs/studio/story_02/master.wav",
-            "timeline": t2
-        })
-        
+    titles = {
+        "story_01": ("पंचतंत्र: शेर और चतुर खरगोश", ["कबीर (सूत्रधार)", "भासुरक (शेर)", "चतुर खरगोश"]),
+        "story_02": ("न्याय और ममता (विक्रमादित्य, दादी माँ, नन्ही पिंकी)", ["कबीर (सूत्रधार)", "दादी माँ", "राजा विक्रमादित्य", "नन्ही पिंकी"]),
+        "story_03": ("अकबर-बीरबल: बीरबल की खिचड़ी", ["कबीर (सूत्रधार)", "शहंशाह अकबर", "बीरबल", "निर्धन ब्राह्मण"]),
+        "story_04": ("भूतिया हवेली का रहस्य", ["कबीर (सूत्रधार)", "अमित", "रोहन", "रहस्यमयी परछाईं"]),
+    }
+    studio_dir = "outputs/studio"
+    if os.path.exists(studio_dir):
+        for story_id in sorted(os.listdir(studio_dir)):
+            s_dir = os.path.join(studio_dir, story_id)
+            if not os.path.isdir(s_dir) or not story_id.startswith("story_") or "baseline" in story_id:
+                continue
+            tl_path = os.path.join(s_dir, "timeline.json")
+            mp3_path = os.path.join(s_dir, "master.mp3")
+            wav_path = os.path.join(s_dir, "master.wav")
+            if os.path.exists(tl_path) and (os.path.exists(mp3_path) or os.path.exists(wav_path)):
+                try:
+                    with open(tl_path, "r", encoding="utf-8") as f:
+                        tl = json.load(f)
+                    info = titles.get(story_id, (story_id.replace("_", " ").title(), []))
+                    productions.append({
+                        "id": story_id,
+                        "title": info[0],
+                        "characters": info[1],
+                        "duration_sec": round(tl.get("total_duration_ms", 0) / 1000, 1),
+                        "master_mp3": f"/api/audio/outputs/studio/{story_id}/master.mp3",
+                        "master_wav": f"/api/audio/outputs/studio/{story_id}/master.wav",
+                        "timeline": tl
+                    })
+                except Exception as e:
+                    logger.warning(f"Error loading gallery story {story_id}: {e}")
     return {"productions": productions}
 
 

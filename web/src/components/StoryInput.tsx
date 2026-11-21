@@ -4,6 +4,7 @@ import { BookOpen, Sparkles, Wand2, PlayCircle, Loader2 } from 'lucide-react';
 interface StoryInputProps {
   onAnalyze: (text: string) => Promise<void>;
   onSynthesize: () => Promise<void>;
+  onPresetSelect?: (presetId: string, text: string) => void;
   isAnalyzing: boolean;
   isSynthesizing: boolean;
   hasAnalyzed: boolean;
@@ -11,7 +12,7 @@ interface StoryInputProps {
 
 const PRESET_STORIES = [
   {
-    id: '01',
+    id: 'story_01',
     title: 'पंचतंत्र: शेर और चतुर खरगोश (क्रूरता, चालाकी, कुआँ)',
     text: `एक घने जंगल में भासुरक नाम का एक बहुत क्रूर और शक्तिशाली शेर रहता था। वह प्रतिदिन कई निर्दोष जानवरों को मारकर खा जाता था।
 एक दिन जंगल के सभी जानवरों ने मिलकर शेर से प्रार्थना की, "महाराज! आप रोज़ इतने जानवरों को न मारें। हम रोज़ खुद ही एक जानवर आपके भोजन के लिए भेज दिया करेंगे।"
@@ -25,7 +26,7 @@ const PRESET_STORIES = [
 कुएँ में डूबकर शेर मर गया और नन्हे खरगोश ने अपनी चतुराई से पूरे जंगल को भयमुक्त कर दिया।`,
   },
   {
-    id: '02_nyay_aur_mamta',
+    id: 'story_02',
     title: 'न्याय और ममता (विक्रमादित्य, दादी माँ, नन्ही पिंकी — 4 पात्र)',
     text: `उज्जैन के राजदरबार में राजा विक्रमादित्य न्याय की गद्दी पर विराजमान थे।
 तभी एक वृद्ध महिला अपनी छह साल की नन्ही पोती के साथ रोते हुए दरबार में उपस्थित हुई।
@@ -37,7 +38,7 @@ const PRESET_STORIES = [
 पूरा राजदरबार राजा विक्रमादित्य के न्याय और दयालुता के जयकारों से गूंज उठा।`,
   },
   {
-    id: '02',
+    id: 'story_03',
     title: 'अकबर-बीरबल: बीरबल की खिचड़ी (न्याय, चतुराई)',
     text: `सर्दियों की एक ठंडी रात में शहंशाह अकबर और बीरबल यमुना नदी के किनारे टहल रहे थे। पानी बर्फ की तरह ठंडा था।
 अकबर ने कहा, "बीरबल! क्या कोई इंसान दौलत के लिए पूरी रात इस बर्फीले पानी में खड़ा रह सकता है?"
@@ -45,42 +46,59 @@ const PRESET_STORIES = [
 अगले दिन एक निर्धन ब्राह्मण आया जिसने सौ सोने के सिक्कों के लिए पूरी रात यमुना के ठंडे पानी में बिताई।
 अकबर ने ब्राह्मण से पूछा, "तुम इतनी ठंड में कैसे जीवित रहे?"
 ब्राह्मण ने झुककर कहा, "हुज़ूर, दूर महल की छत पर एक दीपक जल रहा था। मैं उसी दीपक को देखकर ठंड भूल गया।"
-अकबर ने कठोरता से कहा, "इसका मतलब तुमने महल के दीपक की गरमी से रात काटी! तुम्हें कोई इनाम नहीं मिलेगा।"
+अकबर ने कठोरता से कहा, "तुमने महल के दीपक की गरमी से रात काटी! तुम्हें कोई इनाम नहीं मिलेगा।"
 ब्राह्मण रोता हुआ बीरबल के पास गया। अगले दिन बीरबल दरबार नहीं आए।
 अकबर खुद बीरबल के घर पहुंचे। उन्होंने देखा कि ज़मीन पर आग जल रही है और उससे पाँच हाथ ऊपर हाँडी टंगी है।
 अकबर ने हँसते हुए पूछा, "बीरबल, क्या यह खिचड़ी कभी पकेगी?"
-बीरबल ने नम्रता से कहा, "जहाँपनाह, अगर महल के एक छोटे से दीपक की गरमी से यमुना में खड़ा ब्राह्मण बच सकता है, तो इस आग से मेरी खिचड़ी भी ज़रूर पकेगी।"
+बीरबल ने नम्रता से कहा, "जहाँपनाह, अगर महल के दीपक की गरमी से ब्राह्मण बच सकता है, तो इस आग से मेरी खिचड़ी भी ज़रूर पकेगी।"
 अकबर को अपनी गलती समझ आ गई और उन्होंने ब्राह्मण को बुलाकर पूरा इनाम दिया।`,
   },
   {
-    id: '05',
+    id: 'story_04',
     title: 'भूतिया हवेली का रहस्य (रहस्य, सस्पेंस, डर)',
     text: `काली अमावस्या की रात थी। गाँव के अंतिम छोर पर स्थित पुरानी हवेली में सन्नाटा पसरा हुआ था।
 अमित ने कांपते हाथों से टॉर्च जलाई और फुसफुसाया, "रोहन, मुझे लगता है हमें वापस गाँव लौट जाना चाहिए। यहाँ कुछ अजीब है।"
 रोहन ने आगे बढ़ते हुए धीमी आवाज़ में कहा, "डरपोक मत बनो! हवेली के उस कमरे में खज़ाने का नक्शा छिपा है।"
-तभी हवेली के ऊपर वाले कमरे से किसी के चलने की भारी आहट सुनाई दी—छम... छम... छम...
+तभी हवेली के ऊपर वाले कमरे से किसी के चलने की भारी आहट सुनाई दी।
 अमित की सांसें अटक गईं। उसने चिल्लाकर कहा, "भागो रोहन! कोई हमारे पीछे खड़ा है!"
 अचानक टॉर्च की रोशनी बुझ गई और सामने एक परछाईं आकर रुक गई।
-उस परछाईं ने धीमी, भारी आवाज़ में कहा, "यहाँ से कोई ज़िंदा वापस नहीं जाता..."`,
+उस परछाईं ने धीमी, भारी आवाज़ में कहा, "यहाँ से कोई ज़िंदा वापस नहीं जाता!"`,
   },
 ];
 
 export const StoryInput: React.FC<StoryInputProps> = ({
   onAnalyze,
   onSynthesize,
+  onPresetSelect,
   isAnalyzing,
   isSynthesizing,
   hasAnalyzed,
 }) => {
-  const [selectedPreset, setSelectedPreset] = useState('01');
+  const [selectedPreset, setSelectedPreset] = useState('story_01');
   const [storyText, setStoryText] = useState(PRESET_STORIES[0].text);
 
   const handlePresetChange = (presetId: string) => {
     setSelectedPreset(presetId);
+    if (!presetId) return;
     const story = PRESET_STORIES.find((s) => s.id === presetId);
     if (story) {
       setStoryText(story.text);
+      if (onPresetSelect) {
+        onPresetSelect(presetId, story.text);
+      }
     }
+  };
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setStoryText(e.target.value);
+    setSelectedPreset('');
+  };
+
+  const handleDirectSynthesize = async () => {
+    if (!hasAnalyzed) {
+      await onAnalyze(storyText);
+    }
+    await onSynthesize();
   };
 
   return (
@@ -105,6 +123,7 @@ export const StoryInput: React.FC<StoryInputProps> = ({
                 {p.title}
               </option>
             ))}
+            <option value="">✍️ अपनी नई कहानी लिखें (Custom Story)</option>
           </select>
         </div>
       </div>
@@ -113,12 +132,12 @@ export const StoryInput: React.FC<StoryInputProps> = ({
         <textarea
           rows={7}
           value={storyText}
-          onChange={(e) => setStoryText(e.target.value)}
+          onChange={handleTextChange}
           placeholder="यहाँ अपनी हिन्दी कहानी दर्ज करें (100–500 शब्द)..."
           className="w-full text-sm bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-slate-200 focus:outline-none focus:border-amber-500 font-devanagari leading-relaxed resize-y"
         />
         <div className="absolute right-3 bottom-3 text-[10px] font-mono text-slate-500 bg-slate-900/80 px-2 py-0.5 rounded">
-          {storyText.trim().split(/\s+/).length} words • {storyText.length} chars
+          {storyText.trim().split(/\s+/).filter(Boolean).length} words • {storyText.length} chars
         </div>
       </div>
 
@@ -147,8 +166,8 @@ export const StoryInput: React.FC<StoryInputProps> = ({
           </button>
 
           <button
-            onClick={onSynthesize}
-            disabled={!hasAnalyzed || isSynthesizing || isAnalyzing}
+            onClick={handleDirectSynthesize}
+            disabled={isSynthesizing || isAnalyzing || !storyText.trim()}
             className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-2 transition-all disabled:opacity-40 shadow-lg shadow-amber-500/10 active:scale-95"
           >
             {isSynthesizing ? (
@@ -158,7 +177,7 @@ export const StoryInput: React.FC<StoryInputProps> = ({
             )}
             <span>
               {isSynthesizing
-                ? 'ध्वनि निर्माण जारी है...'
+                ? 'ध्वनि निर्माण जारी है (NVIDIA H200)...'
                 : '2. पूर्ण ऑडियो निर्माण (Synthesize Audio)'}
             </span>
           </button>
